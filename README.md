@@ -30,6 +30,7 @@
 
 - 本地打开：`prototype/index.html`（单文件，双击即可，16 屏互相跳转，无需安装任何东西）
 - 在线预览：**[https://yangyang254.github.io/banxiaozhu/prototype/](https://yangyang254.github.io/banxiaozhu/prototype/)**（GitHub Pages 托管，16 屏可点击；仓库内 prototype/index.html 也可本地双击打开）
+- 专用原型工具（即时设计）：**[https://js.design/f/zCDinL](https://js.design/f/zCDinL)**　16 块画板 P-01…A-06，可查看图层、间距与标注
 
 原型包含两套：**前台 10 屏**（登录、解析、结果卡片、待办、提醒、问答、资料库、设置、发布通知、维护资料）
 与**后台 6 屏**（管理端登录、数据看板、用户管理、通知与待办、资料审核、日志与设置）。
