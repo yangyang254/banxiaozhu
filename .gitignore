@@ -1,0 +1,11 @@
+﻿# 依赖与本地环境
+.venv/
+__pycache__/
+*.pyc
+*.db
+*.log
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini

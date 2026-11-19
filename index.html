@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智班工坊 · 班小助 BanXiaoZhu</title>
+<style>
+  :root{--navy:#16233d;--blue:#2f6fed;--orange:#f2762e;--ink:#1c2b45;--muted:#5b6b85;--bg:#f4f7fc;--line:#e2e8f3}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+  .wrap{max-width:960px;margin:0 auto;padding:44px 22px 70px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:52px;height:52px;border-radius:14px;background:linear-gradient(140deg,#16233d,#2f6fed);color:#fff;
+        display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px}
+  h1{font-size:24px;margin:0}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:2px}
+  .lead{margin:22px 0 26px;color:var(--muted)}
+  h2{font-size:16px;margin:34px 0 12px;padding-left:10px;border-left:4px solid var(--blue)}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  a.card{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+         text-decoration:none;color:inherit;transition:.16s}
+  a.card:hover{border-color:var(--blue);box-shadow:0 8px 22px rgba(47,111,237,.12);transform:translateY(-2px)}
+  .card b{display:block;font-size:15px}
+  .card span{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+  .tag{display:inline-block;font-size:12px;color:var(--blue);background:#eaf1ff;border-radius:999px;padding:1px 9px;margin-left:6px;vertical-align:2px}
+  .tag.warn{color:#a8521a;background:#fff2e9}
+  footer{margin-top:44px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="logo">班</div>
+    <div>
+      <h1>班小助 BanXiaoZhu</h1>
+      <div class="sub">智班工坊 · 校园事务智能体 · 计科24级78班</div>
+    </div>
+  </div>
+
+  <p class="lead">把班级群里刷屏的通知，变成今天该做的那几件事。本页是第二次团队作业（原型设计 + 概要设计）的在线入口。</p>
+
+  <h2>可点击原型</h2>
+  <div class="grid">
+    <a class="card" href="./prototype/">
+      <b>16 屏可点击原型<span class="tag">在线</span></b>
+      <span>前台 10 屏 + 后台 6 屏，支持跳转、返回与逐屏交互规则说明</span>
+    </a>
+  </div>
+
+  <h2>设计文档（PDF）</h2>
+  <div class="grid">
+    <a class="card" href="./docs/智班工坊_系统设计说明书.pdf">
+      <b>系统设计说明书</b>
+      <span>30 页 · 分层架构、用例/活动/时序/协作图、接口契约、关键算法</span>
+    </a>
+    <a class="card" href="./docs/智班工坊_数据库设计说明书.pdf">
+      <b>数据库设计说明书</b>
+      <span>16 页 · ER 图、关系模式与 3NF、索引与物理设计、ORM 映射、完整 DDL</span>
+    </a>
+    <a class="card" href="./docs/智班工坊_原型设计说明书.pdf">
+      <b>原型设计说明书</b>
+      <span>20 页 · 16 屏逐屏交互、校验规则、数据来源与走查路径</span>
+    </a>
+  </div>
+
+  <h2>仓库</h2>
+  <div class="grid">
+    <a class="card" href="https://github.com/yangyang254/banxiaozhu">
+      <b>GitHub 仓库</b>
+      <span>README / COLLAB 协作记录 / docs 三份 PDF / prototype 源码 / assets 设计图</span>
+    </a>
+    <a class="card" href="./README.md">
+      <b>README（原始 Markdown）</b>
+      <span>项目简介、文档索引、设计要点与后续迭代计划</span>
+    </a>
+  </div>
+
+  <footer>
+    智班工坊 · 3124004185 肖武阳 / 3124004175 刘旭波 / 3124004181 王梓瀚 &nbsp;|&nbsp; 第二次团队作业：原型设计 + 概要设计
+  </footer>
+</div>
+</body>
+</html>
