@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>班小助 · 原型（可点击）</title>
+<style>
+  :root{
+    --navy:#16233d; --ink:#1c2b45; --grey:#5b6b85; --line:#e3e9f4;
+    --blue:#2f6fed; --blue-l:#eaf1ff; --orange:#f2762e; --orange-l:#fff2e9;
+    --green:#12a075; --green-l:#e6f7f1; --red:#e5484d; --bg:#f4f7fc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+  a{color:inherit;text-decoration:none}
+  .wrap{display:flex;min-height:100vh}
+
+  /* 顶部条 */
+  .top{height:56px;background:var(--navy);color:#fff;display:flex;align-items:center;padding:0 22px;gap:14px}
+  .logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#2f6fed,#5f9bff);display:grid;place-items:center;font-size:13px;font-weight:700}
+  .top .name{font-weight:700;letter-spacing:.5px}
+  .top .tag{font-size:12px;color:#9fb2d4;border:1px solid #35486b;padding:2px 8px;border-radius:20px}
+  .top .spacer{flex:1}
+  .who{display:flex;align-items:center;gap:6px;font-size:13px;color:#dbe4f5}
+  .avatar{width:26px;height:26px;border-radius:50%;background:#2f6fed;display:grid;place-items:center;font-size:12px;font-weight:700}
+
+  /* 侧栏 */
+  .side{width:190px;background:#fff;border-right:1px solid var(--line);padding:14px 10px;flex:none}
+  .side .grp{font-size:11px;color:#93a1ba;letter-spacing:1px;margin:14px 10px 6px}
+  .side a{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;color:var(--grey);font-size:13.5px}
+  .side a:hover{background:var(--bg);color:var(--ink)}
+  .side a.on{background:var(--blue-l);color:var(--blue);font-weight:700}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
+
+  /* 主区 */
+  .main{flex:1;padding:20px 26px 40px;min-width:0}
+  .crumb{font-size:12px;color:#93a1ba;margin-bottom:10px}
+  h1{font-size:21px;letter-spacing:.3px}
+  h1 .sub{font-size:13px;color:var(--grey);font-weight:400;margin-left:10px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}
+  .row{display:flex;gap:14px}
+  .row>*{min-width:0}
+  .btn{display:inline-flex;align-items:center;gap:6px;border:1px solid transparent;background:var(--blue);color:#fff;padding:9px 16px;border-radius:9px;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+  .btn.orange{background:var(--orange)}
+  .btn.sm{padding:5px 11px;font-size:12.5px;border-radius:7px}
+  .btn.danger{background:#fff;color:var(--red);border-color:#f6cdcf}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11.5px}
+  .pill.ok{background:var(--green-l);color:var(--green)}
+  .pill.warn{background:var(--orange-l);color:var(--orange)}
+  .pill.blue{background:var(--blue-l);color:var(--blue)}
+  .pill.grey{background:#eef1f7;color:var(--grey)}
+  .muted{color:var(--grey);font-size:12.5px}
+  .label{font-size:12px;color:var(--grey);margin-bottom:4px}
+  .field{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line)}
+  .field:last-child{border-bottom:0}
+  .field b{font-weight:700}
+  .conf{font-size:11.5px;padding:1px 7px;border-radius:6px;background:var(--green-l);color:var(--green)}
+  .conf.low{background:var(--orange-l);color:var(--orange)}
+  textarea,input[type=text],select,input[type=password]{
+    width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:13.5px;color:var(--ink);background:#fbfcff}
+  textarea{min-height:110px;resize:vertical;line-height:1.6}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{background:var(--navy);color:#fff;font-weight:600;text-align:left;padding:9px 10px;font-size:12.5px}
+  td{padding:9px 10px;border-bottom:1px solid var(--line)}
+  tr:nth-child(even) td{background:#f7f9fd}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .kpi .k{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .kpi .k .n{font-size:25px;font-weight:700;margin-top:6px}
+  .kpi .k .n small{font-size:12px;font-weight:400;color:var(--grey)}
+  .bars{display:flex;align-items:flex-end;gap:10px;height:120px;padding-top:8px}
+  .bars i{flex:1;background:linear-gradient(180deg,#5f9bff,#2f6fed);border-radius:6px 6px 0 0;display:block}
+  .tip{background:var(--blue-l);border-left:3px solid var(--blue);border-radius:0 10px 10px 0;padding:10px 14px;font-size:12.5px;color:#28406b;margin-top:12px}
+  .toast{position:fixed;right:22px;bottom:22px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(22,35,61,.12);padding:12px 16px;font-size:13px;max-width:330px}
+  .toast .t{font-weight:700;margin-bottom:3px}
+  .center{max-width:420px;margin:8vh auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px}
+  .center h2{font-size:19px;margin-bottom:6px}
+  .center .muted{margin-bottom:18px}
+  .switch{display:flex;gap:8px;margin:10px 0 18px}
+  .switch span{flex:1;text-align:center;padding:10px;border:1px solid var(--line);border-radius:10px;color:var(--grey);font-size:13px}
+  .switch span.on{border-color:var(--blue);background:var(--blue-l);color:var(--blue);font-weight:700}
+  .hl{background:#fff3c4;border-radius:3px;padding:0 2px}
+  .bubble{display:inline-block;background:var(--orange);color:#fff;border-radius:12px 12px 12px 3px;padding:8px 12px;font-size:12.5px}
+  .steps{display:flex;gap:8px;font-size:12px;color:var(--grey)}
+  .steps b{color:var(--blue)}
+  .foot{margin-top:18px;font-size:12px;color:#93a1ba;display:flex;gap:14px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ---------- 小工具 ---------- */
+const P = (s) => `<div class="pill ${s[0]}">${s[1]}</div>`;
+function shell(active, title, sub, body, opts={}){
+  const nav = [
+    ["前台 · 学生视角", [
+      ["p01","P-01 登录与角色选择"],["p02","P-02 通知解析"],["p03","P-03 解析结果卡片"],
+      ["p04","P-04 我的待办"],["p05","P-05 提醒中心"],["p06","P-06 班级问答"],
+      ["p07","P-07 班级资料库"],["p08","P-08 我的与设置"]
+    ]],
+    ["前台 · 班委视角", [
+      ["p09","P-09 发布通知"],["p10","P-10 维护班级资料"]
+    ]],
+    ["后台 · 管理端", [
+      ["a01","A-01 管理端登录"],["a02","A-02 数据看板"],["a03","A-03 用户管理"],
+      ["a04","A-04 通知与待办"],["a05","A-05 资料审核"],["a06","A-06 日志与设置"]
+    ]]
+  ];
+  const side = nav.map(([g,items])=>`<div class="grp">${g}</div>` +
+      items.map(([id,t])=>`<a href="#/${id}" class="${id===active?'on':''}"><i class="dot"></i>${t}</a>`).join("")).join("");
+  return `<div class="top">
+      <div class="logo">助</div><div class="name">班小助</div>
+      <div class="tag">校园事务智能体 · 原型 v1.0</div>
+      <div class="spacer"></div>
+      <div class="who"><span>${opts.role||'肖武阳 · 班委'}</span><div class="avatar">肖</div></div>
+    </div>
+    <div class="wrap">
+      <div class="side">${side}</div>
+      <div class="main">
+        <div class="crumb">${opts.crumb||'班小助 / 前台'}</div>
+        <h1>${title}${sub?`<span class="sub">${sub}</span>`:''}</h1>
+        ${body}
+        <div class="foot"><span>可点击原型 · 点击左侧菜单切换页面</span><span>下一屏：${opts.next||'—'}</span></div>
+      </div>
+    </div>`;
+}
+
+/* ---------- P-01 登录与角色选择 ---------- */
+const p01 = () => shell("p01","登录与角色选择","无需密码：昵称 + 角色即可进入",`
+  <div class="center" style="margin:6vh auto">
+    <h2>欢迎使用班小助</h2>
+    <div class="muted">把班级群里刷屏的通知，变成今天该做的那几件事。</div>
+    <div class="label">你的昵称</div>
+    <input type="text" value="肖武阳">
+    <div class="label" style="margin-top:14px">你的角色</div>
+    <div class="switch"><span class="on">班委（可发布）</span><span>普通同学</span></div>
+    <div style="display:flex;gap:10px">
+      <a class="btn" href="#/p02" style="flex:1;justify-content:center">进入班小助</a>
+      <a class="btn ghost" href="#/a01">我是管理员</a>
+    </div>
+    <div class="tip">规则：<b>昵称唯一</b>，重名时提示「这个名字已经有人用了」；角色决定菜单可见性（班委多出「发布通知」「维护资料」两项）。不做账号密码，避免收集口令。</div>
+  </div>`);
+
+/* ---------- P-02 通知解析 ---------- */
+const p02 = () => shell("p02","通知解析","把群里那条通知整段粘进来",`
+  <div class="row">
+    <div class="card" style="flex:1.35">
+      <div class="label">粘贴通知原文（支持从 QQ / 微信直接复制）</div>
+      <textarea>【通知】请各班班长于 11 月 8 日 18:00 前，将国家励志奖学金申请材料交到实验楼 A302 办公室。材料包括：成绩单、家庭经济困难证明、个人申请书（800 字以内）。逾期不再受理，请务必转达本班同学。</textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+        <a class="btn" href="#/p03">开始解析</a>
+        <a class="btn ghost" href="#/p02">清空</a>
+        <span class="muted">最近解析 3.2 秒 · 模型 deepseek-chat</span>
+      </div>
+      <div class="tip">交互规则：① 文本为空或少于 15 字时按钮置灰；② 解析中按钮显示「解析中…」并禁用，防止重复提交；③ 失败时保留原文并提示「模型没返回有效结果，已用规则抽取兜底」。</div>
+    </div>
+    <div class="card" style="flex:.9">
+      <div class="label">示例通知（点一下直接填入）</div>
+      ${["国家励志奖学金材料收集","英语四级报名与缴费","期末复习课安排"].map(t=>`
+        <div class="field"><b>${t}</b><span class="muted">填入 →</span></div>`).join("")}
+      <div class="tip">三条例题覆盖三类要素：<b>时间+地点+材料</b>、<b>时间+金额</b>、<b>时间+地点</b>，用来演示字段抽取的边界。</div>
+    </div>
+  </div>`);
+
+/* ---------- P-03 解析结果卡片 ---------- */
+const p03 = () => shell("p03","解析结果卡片","每个字段都能点回原文那一句",`
+  <div class="row">
+    <div class="card" style="flex:1.3">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><b style="font-size:16px">国家励志奖学金材料收集</b>
+          <div class="muted" style="margin-top:4px">来源：班群「计科24级78班通知群」 · 原文 128 字</div></div>
+        <div style="text-align:right"><div class="muted">整体置信度</div><div style="font-size:22px;font-weight:700;color:#12a075">95%</div></div>
+      </div>
+      <div style="margin-top:14px">
+        <div class="field"><span class="label" style="margin:0">截止时间</span><span><b>2026-11-08 18:00</b> <i class="conf">可信 95%</i></span></div>
+        <div class="field"><span class="label" style="margin:0">地点</span><span><b>实验楼 A302 办公室</b> <i class="conf">可信 88%</i></span></div>
+        <div class="field"><span class="label" style="margin:0">材料</span><span><b>成绩单 / 家庭经济困难证明 / 个人申请书（800 字内）</b> <i class="conf">可信 92%</i></span></div>
+        <div class="field"><span class="label" style="margin:0">要做什么</span><span>按材料清单准备并提交 <i class="conf low">待确认 72%</i></span></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <a class="btn" href="#/p05">＋ 加入我的待办</a>
+        <a class="btn ghost" href="#/p04">去看待办 →</a>
+        <a class="btn ghost" href="#/p02">重新解析</a>
+      </div>
+      <div class="tip">规则：置信度 <b>≥ 75%</b> 显示「可信」，<b>&lt; 75%</b> 标黄「待确认」并可点开修改；每个字段右侧可展开原文出处，出处句子逐字高亮；<b>只有点了「加入我的待办」才会生成待办</b>。</div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="label">原文（字段出处高亮）</div>
+      <div style="line-height:2.1;font-size:13.5px;color:#28374f">
+        【通知】请各班班长于 <span class="hl">11 月 8 日 18:00</span> 前，将国家励志奖学金申请材料交到
+        <span class="hl">实验楼 A302 办公室</span>。<br>材料包括：
+        <span class="hl">成绩单、家庭经济困难证明、个人申请书（800 字以内）</span>。<br>逾期不再受理，请务必转达本班同学。
+      </div>
+      <div class="tip">如果模型给出的出处句子在原文里<b>找不到</b>，该字段判为「证据不足」，直接置空并要求人工补填，宁缺勿错。</div>
+    </div>
+  </div>`);
+
+/* ---------- P-04 我的待办 ---------- */
+const p04 = () => shell("p04","我的待办","按紧急程度排序，可编辑、可删除",`
+  <div class="card">
+    <div style="display:flex;gap:10px;margin-bottom:6px">
+      ${P(["blue","全部 6"])}${P(["grey","今天 2"])}${P(["grey","本周 4"])}${P(["grey","已完成 11"])}
+      <span class="spacer" style="flex:1"></span>
+      <a class="btn ghost sm" href="#/p05">看提醒</a>
+    </div>
+    <div id="todos">
+      ${[
+        ["交国家励志奖学金材料","2026-11-08 18:00","warn","明天 18:00 截止","实验楼 A302 办公室"],
+        ["英语四级报名缴费","2026-11-09 12:00","blue","后天 12:00 截止","教务系统线上缴费"],
+        ["期末复习课（高数）","2026-11-10 19:00","grey","3 天后","教学楼 B203"]
+      ].map(([t,d,pill,left,where])=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line)">
+          <input type="checkbox" style="width:16px;height:16px">
+          <div style="flex:1;min-width:0">
+            <div><b>${t}</b> ${P([pill.includes("warn")?"warn":pill.includes("blue")?"blue":"grey", left])}</div>
+            <div class="muted" style="margin-top:3px">截止 ${d} · ${where}</div>
+          </div>
+          <a class="btn ghost sm" href="#/p04">编辑</a>
+          <a class="btn danger sm" href="#/p04">删除</a>
+        </div>`).join("")}
+    </div>
+    <div class="tip">交互规则：① 勾选即标记完成，行变灰并移到「已完成」；② 点「编辑」在该行原地展开小表单（标题 + 截止时间，可直接清空时间），保存后<b>重新计算提醒</b>；③ 删除需二次确认，删除时连提醒一起删。</div>
+  </div>
+  <div class="card">
+    <div class="label">行内编辑态（示意）</div>
+    <div style="background:#f7f9ff;border:1px solid var(--line);border-radius:10px;padding:14px">
+      <div class="label">标题</div><input type="text" value="交国家励志奖学金材料">
+      <div class="label" style="margin-top:10px">截止时间</div><input type="text" value="2026-11-08T18:00">
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <span class="btn sm">保存</span><span class="btn ghost sm">取消</span><span class="btn ghost sm">清空时间</span>
+      </div>
+    </div>
+  </div>`);
+
+/* ---------- P-05 提醒中心 ---------- */
+const p05 = () => shell("p05","提醒中心","提前 1 天 / 2 小时 / 10 分钟，三档各一次",`
+  <div class="row">
+    <div class="card" style="flex:1.3">
+      <table>
+        <tr><th>提醒时间</th><th>档位</th><th>内容</th><th>状态</th></tr>
+        <tr><td>11-07 18:00</td><td>${P(["grey","提前 1 天"])}</td><td>交国家励志奖学金材料 · 明天 18:00 截止</td><td>${P(["ok","已读"])}</td></tr>
+        <tr><td>11-08 16:00</td><td>${P(["grey","提前 2 小时"])}</td><td>交国家励志奖学金材料 · 还有 2 小时</td><td>${P(["ok","已读"])}</td></tr>
+        <tr><td>11-08 17:50</td><td>${P(["warn","提前 10 分钟"])}</td><td>交国家励志奖学金材料 · 10 分钟后截止</td><td>${P(["warn","待处理"])}</td></tr>
+      </table>
+      <div class="tip">规则：同一待办的同一档位<b>只生成一次</b>（数据库唯一约束兜底）；改截止时间后旧提醒作废重算；点「已读」写入确认时间，之后不再弹出。</div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="label">页内气泡（前端每 30 秒轮询一次）</div>
+      <div class="bubble">⏰ 交国家励志奖学金材料：10 分钟后截止</div>
+      <div class="muted" style="margin-top:14px">点气泡 → 跳到对应待办；点「知道了」→ 本次不再提示。</div>
+      <div class="tip">为什么用轮询：一周项目的取舍。<b>30 秒一次</b>足够准，实现只有十几行代码；换成 WebSocket 要多维护连接与重连。</div>
+    </div>
+  </div>`);
+
+/* ---------- P-06 班级问答 ---------- */
+const p06 = () => shell("p06","班级问答","答案必须带出处，资料里没有就说没有",`
+  <div class="row">
+    <div class="card" style="flex:1.3">
+      <div class="label">你的问题</div>
+      <div style="display:flex;gap:10px"><input type="text" value="学生证丢了怎么补办？"><a class="btn" href="#/p06">提问</a></div>
+      <div style="margin-top:16px;line-height:1.9">
+        <div style="font-weight:700;margin-bottom:6px">答：到实验楼 A302 办公室补办</div>
+        <div>需要带：① 一寸照片 1 张；② 学生证补办申请表（班委处领取）；③ 工本费 10 元。</div>
+        <div>办理时间：工作日 8:30–11:30、14:00–17:00，一般 3 个工作日可取。</div>
+        <div class="muted" style="margin-top:10px">依据：班级资料第 1 条「学生证补办流程」（班委 2026-10-12 维护）</div>
+        <div style="display:flex;gap:8px;margin-top:12px">${P(["ok","这条有用"])}${P(["grey","不准确，去纠错"])}</div>
+      </div>
+      <div class="tip">规则：① 只依据班级资料作答，资料里没有的就说「资料里没写，建议问辅导员」，<b>不许自由发挥</b>；② 每条回答必须列出依据条目；③ 用户点「不准确」进入纠错，纠错内容由班委审核后入库。</div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="label">高频问题（点一下直接问）</div>
+      ${["请假流程怎么走？","励志奖学金什么时候评？","四六级成绩单在哪打印？","教室怎么借用？"].map(q=>`
+        <div class="field"><span>${q}</span><span class="muted">问 →</span></div>`).join("")}
+      <div class="tip">检索做法：对问题与资料做<b>字面重合打分</b>，取前 4 条塞进提示词。够用、可解释、零额外成本。</div>
+    </div>
+  </div>`);
+
+/* ---------- P-07 班级资料库 ---------- */
+const p07 = () => shell("p07","班级资料库","班委维护，同学查阅",`
+  <div class="card">
+    <div style="display:flex;gap:10px;align-items:center">
+      <input type="text" placeholder="搜资料：学生证 / 请假 / 奖学金 …">
+      <a class="btn ghost" href="#/p10">我要维护资料</a>
+    </div>
+    <table style="margin-top:14px">
+      <tr><th>分类</th><th>问题</th><th>答案要点</th><th>维护人</th><th>更新时间</th></tr>
+      <tr><td>${P(["blue","证件"])}</td><td>学生证补办流程</td><td>A302 办理，照片 + 申请表 + 10 元，3 个工作日</td><td>王梓瀚</td><td>2026-10-12</td></tr>
+      <tr><td>${P(["blue","事务"])}</td><td>请假流程</td><td>三天以内辅导员审批，超过三天需院系盖章</td><td>肖武阳</td><td>2026-10-20</td></tr>
+      <tr><td>${P(["blue","奖助"])}</td><td>国家励志奖学金评定</td><td>每年 10 月，需困难认定 + 成绩排名前 30%</td><td>刘旭波</td><td>2026-10-28</td></tr>
+      <tr><td>${P(["blue","教务"])}</td><td>四六级成绩单打印</td><td>教务系统自助打印，或教务处窗口</td><td>王梓瀚</td><td>2026-11-02</td></tr>
+    </table>
+    <div class="tip">资料条目是答疑的唯一依据，所以每条都要有<b>维护人与更新时间</b>；过期的资料在答疑里会被标注「可能已过期」。</div>
+  </div>`);
+
+/* ---------- P-08 我的与设置 ---------- */
+const p08 = () => shell("p08","我的与设置","提醒偏好、角色、数据",`
+  <div class="row">
+    <div class="card" style="flex:1">
+      <div class="label">昵称与角色</div>
+      <input type="text" value="肖武阳">
+      <div class="switch" style="margin-top:12px"><span class="on">班委</span><span>普通同学</span></div>
+      <div class="label">提醒偏好</div>
+      ${[["提前 1 天","开"],["提前 2 小时","开"],["提前 10 分钟","开"]].map(([n,s])=>`
+        <div class="field"><span>${n}</span><span class="muted">${s}</span></div>`).join("")}
+      <div style="margin-top:14px"><a class="btn ghost sm" href="#/p08">保存</a></div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="label">关于这个原型</div>
+      <div style="line-height:1.95">
+        版本 v1.0 · 2026-11<br>
+        前台 10 屏（P-01~P-10）· 后台 6 屏（A-01~A-06）<br>
+        数据仅存本地，不上传服务器
+      </div>
+      <div class="tip">本页只做<b>偏好设置</b>，不做隐私数据展示：原型阶段不收集手机号、学号等敏感信息。</div>
+      <div style="margin-top:14px;display:flex;gap:8px">
+        <a class="btn ghost sm" href="#/a02">看管理端看板</a>
+        <a class="btn ghost sm" href="#/p01">重新登录</a>
+      </div>
+    </div>
+  </div>`);
+
+/* ---------- P-09 班委发布通知 ---------- */
+const p09 = () => shell("p09","发布通知","解析 → 预览 → 一键发给全班",`
+  <div class="row">
+    <div class="card" style="flex:1.25">
+      <div class="label">通知原文</div>
+      <textarea>【教务】本学期英语四级考试报名截止 11 月 9 日 12:00，请同学登录教务系统完成报名并缴费（40 元），逾期视为放弃。</textarea>
+      <div class="row" style="margin-top:12px">
+        <div style="flex:1"><div class="label">截止时间</div><input type="text" value="2026-11-09T12:00"></div>
+        <div style="flex:1"><div class="label">面向</div><select><option>全班同学</option><option>仅班委</option></select></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <a class="btn" href="#/p09">解析并预览</a>
+        <a class="btn orange" href="#/p09">直接发布</a>
+      </div>
+      <div class="tip">规则：发布后同学端「通知列表」可见；勾选「同时生成全班待办」时，会为每位同学生成一条待办并各自计算三级提醒。</div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="label">发布前的检查清单</div>
+      ${["截止时间是否填对（推荐带时分）","地点/线上入口是否写清","材料清单是否齐全","是否需要全班待办"].map(t=>`<div class="field"><span>${t}</span><span class="muted">确认</span></div>`).join("")}
+      <div class="tip">这张清单来自我们自己的踩坑：通知漏写地点，同学要多问三遍。</div>
+    </div>
+  </div>`);
+
+/* ---------- P-10 维护班级资料 ---------- */
+const p10 = () => shell("p10","维护班级资料","增、改、删，改完立刻能在答疑里用",`
+  <div class="row">
+    <div class="card" style="flex:1">
+      <div class="label">问题</div>
+      <input type="text" value="学生证补办流程">
+      <div class="label" style="margin-top:12px">答案</div>
+      <textarea>到实验楼 A302 办公室补办。需要带：一寸照片 1 张、学生证补办申请表（班委处领取）、工本费 10 元。工作日 8:30–11:30、14:00–17:00 办理，一般 3 个工作日可取。</textarea>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <a class="btn" href="#/p10">保存修改</a>
+        <a class="btn ghost" href="#/p10">取消</a>
+      </div>
+      <div class="tip">编辑态：点列表里的「编辑」，表单会回到这里并预填原内容，按钮变成「保存修改」；保存后资料库与答疑<b>立即生效</b>。</div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="label">已有资料（4 条）</div>
+      ${[["学生证补办流程","王梓瀚"],["请假流程","肖武阳"],["国家励志奖学金评定","刘旭波"],["四六级成绩单打印","王梓瀚"]].map(([q,who])=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line)">
+          <div style="flex:1;min-width:0"><b>${q}</b><div class="muted">维护人 ${who}</div></div>
+          <a class="btn ghost sm" href="#/p10">编辑</a>
+          <a class="btn danger sm" href="#/p10">删除</a>
+        </div>`).join("")}
+      <div class="tip">删除需二次确认：资料被答疑引用，误删会让同学问到「不知道」。</div>
+    </div>
+  </div>`);
+
+/* ---------- A-01 管理端登录 ---------- */
+const a01 = () => shell("a01","管理端登录","仅班委与助教可进入",`
+  <div class="center" style="margin:7vh auto">
+    <h2>班小助 · 管理端</h2>
+    <div class="muted">面向班委与助教：看使用情况、管用户与内容。</div>
+    <div class="label">管理口令</div>
+    <input type="password" value="••••••••">
+    <div class="label" style="margin-top:12px">验证码</div>
+    <input type="text" value="7 4 2 9">
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <a class="btn" href="#/a02" style="flex:1;justify-content:center">登录</a>
+      <a class="btn ghost" href="#/p01">返回前台</a>
+    </div>
+    <div class="tip">管理端与前台<b>分离入口</b>，口令错误 5 次锁定 10 分钟；所有管理动作写操作日志（谁、什么时候、改了什么）。</div>
+  </div>`,"",{"role":"肖武阳 · 管理员","crumb":"班小助 / 后台"});
+
+/* ---------- A-02 数据看板 ---------- */
+const a02 = () => shell("a02","数据看板","用数据回答「有没有人用」",`
+  <div class="kpi">
+    <div class="k"><div class="label">本周活跃同学</div><div class="n">47 <small>/ 62 人</small></div></div>
+    <div class="k"><div class="label">解析通知</div><div class="n">128 <small>条</small></div></div>
+    <div class="k"><div class="label">生成待办</div><div class="n">86 <small>条</small></div></div>
+    <div class="k"><div class="label">答疑命中率</div><div class="n" style="color:#12a075">88%</div></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="card" style="flex:1.4">
+      <div class="label">近 7 天解析量</div>
+      <div class="bars">
+        <i style="height:38%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:66%"></i>
+        <i style="height:80%"></i><i style="height:58%"></i><i style="height:92%"></i>
+      </div>
+      <div class="steps" style="margin-top:6px"><span>11-13</span><span>11-14</span><span>11-15</span><span>11-16</span><span>11-17</span><span>11-18</span><span>11-19</span></div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="label">字段可信度分布</div>
+      ${[["≥90%","61%"],["75%–90%","27%"],["<75% 待确认","12%"]].map(([a,b])=>`
+        <div class="field"><span>${a}</span><b>${b}</b></div>`).join("")}
+      <div class="tip">「&lt;75% 待确认」比例是<b>质量红线</b>：超过 15% 说明提示词或资料来源需要调整。</div>
+    </div>
+  </div>`,"",{"role":"肖武阳 · 管理员","crumb":"班小助 / 后台 / 数据看板"});
+
+/* ---------- A-03 用户管理 ---------- */
+const a03 = () => shell("a03","用户管理","改角色、停用账号",`
+  <div class="card">
+    <div style="display:flex;gap:10px;margin-bottom:12px">
+      <input type="text" placeholder="搜昵称">
+      <select style="width:170px"><option>全部角色</option><option>班委</option><option>普通同学</option></select>
+      <a class="btn ghost" href="#/a03">检索</a>
+    </div>
+    <table>
+      <tr><th>昵称</th><th>角色</th><th>加入时间</th><th>近 7 天解析</th><th>操作</th></tr>
+      <tr><td>肖武阳</td><td>${P(["blue","班委"])}</td><td>2026-10-08</td><td>21</td><td><a class="btn ghost sm" href="#/a03">改角色</a> <a class="btn danger sm" href="#/a03">停用</a></td></tr>
+      <tr><td>刘旭波</td><td>${P(["grey","普通同学"])}</td><td>2026-10-08</td><td>18</td><td><a class="btn ghost sm" href="#/a03">改角色</a> <a class="btn danger sm" href="#/a03">停用</a></td></tr>
+      <tr><td>王梓瀚</td><td>${P(["blue","班委"])}</td><td>2026-10-09</td><td>15</td><td><a class="btn ghost sm" href="#/a03">改角色</a> <a class="btn danger sm" href="#/a03">停用</a></td></tr>
+      <tr><td>李同学</td><td>${P(["grey","普通同学"])}</td><td>2026-10-15</td><td>6</td><td><a class="btn ghost sm" href="#/a03">改角色</a> <a class="btn danger sm" href="#/a03">停用</a></td></tr>
+    </table>
+    <div class="tip">停用 ≠ 删除：停用后无法登录但历史数据保留；管理员不能停用自己。</div>
+  </div>`,"",{"role":"肖武阳 · 管理员","crumb":"班小助 / 后台 / 用户"});
+
+/* ---------- A-04 通知与待办 ---------- */
+const a04 = () => shell("a04","通知与待办管理","全班的通知台账",`
+  <div class="card">
+    <div style="display:flex;gap:10px;margin-bottom:12px">
+      <input type="text" placeholder="搜标题 / 地点 / 发布人">
+      <select style="width:150px"><option>全部状态</option><option>进行中</option><option>已截止</option></select>
+      <a class="btn ghost" href="#/a04">检索</a>
+      <span style="flex:1"></span>
+      <a class="btn" href="#/p09">＋ 发布通知</a>
+    </div>
+    <table>
+      <tr><th>标题</th><th>截止</th><th>地点</th><th>置信度</th><th>生成待办</th><th>状态</th></tr>
+      <tr><td>国家励志奖学金材料收集</td><td>11-08 18:00</td><td>实验楼 A302</td><td>95%</td><td>32</td><td>${P(["warn","进行中"])}</td></tr>
+      <tr><td>英语四级报名与缴费</td><td>11-09 12:00</td><td>教务系统</td><td>88%</td><td>28</td><td>${P(["warn","进行中"])}</td></tr>
+      <tr><td>期末复习课安排</td><td>11-10 19:00</td><td>教学楼 B203</td><td>91%</td><td>19</td><td>${P(["grey","已截止"])}</td></tr>
+    </table>
+    <div class="tip">管理员可「下线」错误通知（同学端标为已撤回），但<b>不物理删除</b>，保留追溯。</div>
+  </div>`,"",{"role":"肖武阳 · 管理员","crumb":"班小助 / 后台 / 通知"});
+
+/* ---------- A-05 资料审核 ---------- */
+const a05 = () => shell("a05","资料审核","同学纠错 → 班委审核 → 入库",`
+  <div class="card">
+    <div class="label">待审核（2 条）</div>
+    <table>
+      <tr><th>来源</th><th>针对资料</th><th>纠错内容</th><th>提交时间</th><th>操作</th></tr>
+      <tr><td>李同学</td><td>学生证补办流程</td><td>工本费已改为 15 元（11 月起）</td><td>11-18 10:22</td><td><a class="btn sm" href="#/a05">通过</a> <a class="btn danger sm" href="#/a05">驳回</a></td></tr>
+      <tr><td>刘旭波</td><td>四六级成绩单打印</td><td>补充：教务处窗口周三下午不办理</td><td>11-18 15:40</td><td><a class="btn sm" href="#/a05">通过</a> <a class="btn danger sm" href="#/a05">驳回</a></td></tr>
+    </table>
+    <div class="tip">通过 → 直接写入资料库并记维护人；驳回 → 通知提交人并填原因。<b>审核是资料可信度的最后一道闸</b>。</div>
+  </div>`,"",{"role":"王梓瀚 · 班委","crumb":"班小助 / 后台 / 资料审核"});
+
+/* ---------- A-06 日志与设置 ---------- */
+const a06 = () => shell("a06","日志与设置","出问题时先看这里",`
+  <div class="row">
+    <div class="card" style="flex:1.35">
+      <div class="label">最近调用日志</div>
+      <table>
+        <tr><th>时间</th><th>动作</th><th>耗时</th><th>结果</th></tr>
+        <tr><td>11-19 21:02</td><td>解析通知</td><td>3.2s</td><td>${P(["ok","成功"])}</td></tr>
+        <tr><td>11-19 20:58</td><td>班级答疑</td><td>1.8s</td><td>${P(["ok","命中 4 条"])}</td></tr>
+        <tr><td>11-19 20:41</td><td>解析通知</td><td>8.6s</td><td>${P(["warn","超时→规则兜底"])}</td></tr>
+        <tr><td>11-19 20:15</td><td>班级答疑</td><td>1.5s</td><td>${P(["grey","资料无相关内容"])}</td></tr>
+      </table>
+      <div class="tip">日志只记<b>动作与结果</b>，不记通知原文与个人隐私字段。</div>
+    </div>
+    <div class="card" style="flex:1">
+      <div class="label">模型与阈值</div>
+      <div class="field"><span>解析模型</span><b>deepseek-chat</b></div>
+      <div class="field"><span>解析温度</span><b>0.1</b></div>
+      <div class="field"><span>答疑温度</span><b>0.3</b></div>
+      <div class="field"><span>可信阈值</span><b>75%</b></div>
+      <div class="field"><span>守护扫描间隔</span><b>60 秒</b></div>
+      <div style="margin-top:14px"><a class="btn ghost sm" href="#/a06">保存设置</a></div>
+      <div class="tip">阈值调低→更多字段直接采信但错得更多；调高→更保守但人工补填变多。</div>
+    </div>
+  </div>`,"",{"role":"肖武阳 · 管理员","crumb":"班小助 / 后台 / 日志与设置"});
+
+/* ---------- 路由 ---------- */
+const screens = {p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,a01,a02,a03,a04,a05,a06};
+function render(){
+  const id = (location.hash.replace("#/","") || "p01").trim().toLowerCase();
+  const fn = screens[id] || p01;
+  document.getElementById("app").innerHTML = fn();
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange", render);
+render();
+</script>
+</body>
+</html>
