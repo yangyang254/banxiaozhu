@@ -30,7 +30,7 @@
 
 - 本地打开：`prototype/index.html`（单文件，双击即可，16 屏互相跳转，无需安装任何东西）
 - 在线预览：**[https://yangyang254.github.io/banxiaozhu/prototype/](https://yangyang254.github.io/banxiaozhu/prototype/)**（GitHub Pages 托管，16 屏可点击；仓库内 prototype/index.html 也可本地双击打开）
-- 专用原型工具（即时设计）：**[https://js.design/f/zCDinL](https://js.design/f/zCDinL)**　16 块画板 P-01…A-06，可查看图层、间距与标注
+- 原型设计稿（专用原型工具绘制，16 屏截图 + 逐屏交互规则）：**[docs/智班工坊_原型设计说明书.pdf](docs/智班工坊_原型设计说明书.pdf)**
 
 原型包含两套：**前台 10 屏**（登录、解析、结果卡片、待办、提醒、问答、资料库、设置、发布通知、维护资料）
 与**后台 6 屏**（管理端登录、数据看板、用户管理、通知与待办、资料审核、日志与设置）。
@@ -77,3 +77,26 @@ banxiaozhu/
 | 迭代 2 | 12-08 ~ 12-21 | 日程与课表：周计划、冲突检测 |
 | 迭代 3 | 12-22 ~ 01-04 | 事务办理引导与资料审核闭环 |
 | 迭代 4 | 01-05 ~ 01-18 | 公网部署上线、ESP32 班牌（加分项，规划中） |
+
+### 原型截图索引（16 屏，1440×900）
+
+| 文件 | 页面 |
+| --- | --- |
+| `assets/proto/p01.png` | P-01 登录与角色选择 |
+| `assets/proto/p02.png` | P-02 通知解析 |
+| `assets/proto/p03.png` | P-03 解析结果卡片 |
+| `assets/proto/p04.png` | P-04 我的待办 |
+| `assets/proto/p05.png` | P-05 提醒中心 |
+| `assets/proto/p06.png` | P-06 班级问答 |
+| `assets/proto/p07.png` | P-07 班级资料库 |
+| `assets/proto/p08.png` | P-08 我的与设置 |
+| `assets/proto/p09.png` | P-09 发布通知（班委） |
+| `assets/proto/p10.png` | P-10 维护班级资料（班委） |
+| `assets/proto/a01.png` | A-01 管理端登录 |
+| `assets/proto/a02.png` | A-02 数据看板 |
+| `assets/proto/a03.png` | A-03 用户管理 |
+| `assets/proto/a04.png` | A-04 通知与待办管理 |
+| `assets/proto/a05.png` | A-05 资料审核 |
+| `assets/proto/a06.png` | A-06 日志与设置 |
+
+逐屏的入口 / 关键控件 / 交互规则 / 校验规则 / 数据来源见《智班工坊_原型设计说明书》。
